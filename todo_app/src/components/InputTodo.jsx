@@ -1,33 +1,39 @@
-import React, { useState } from 'react'
+import React, { useRef} from 'react'
+import { v4 as uuidv4 } from "uuid";
 
 function InputTodo({todos, setTodos}) {
 
-  const [todo, setTodo] = useState({id: 0, text: "", check: false});
-//   todoタスクをセット
-  const handleSetTodo = (e) => {
-      setTodo(
-        {
-        id: todo.id + 1,
-        text: e.target.value,
-        check: false
-      }
-    );
-  };
+  const inputEl = useRef(null);
+
+// //   todoタスクをセット
+  // const handleSetTodo = () => {
+  //     setTodo(
+  //       {
+  //       id: uuidv4(),
+  //       text: inputEl.current.value,
+  //       check: false
+  //     }
+  //   );
+  // };
+
 // todoタスクを追加
   const handleAddTodo = (e) => {
     e.preventDefault(); //画面遷移を阻止
-    setTodos([...todos, todo]);
-    // console.log(todos);
-    setTodo(prev => ({
-        ...todo,
-        text: ""
-     })
-    );
+    setTodos([...todos, 
+      {
+        id: uuidv4(),
+        text: inputEl.current.value,
+        check: false
+      }
+    ]);
+    console.table(todos);
+    inputEl.current.value = null;
 }
   return (
     <div className='inputForm'>
         <form>
-            <input type="text" value={todo.text} onChange={handleSetTodo}/>
+            <input type="text" ref={inputEl}/>
+            {/* <input type="text" ref={inputEl} onChange={handleSetTodo} /> */}
             <button onClick={handleAddTodo}>
                 <i className="fa-solid fa-plus"></i>
             </button>
